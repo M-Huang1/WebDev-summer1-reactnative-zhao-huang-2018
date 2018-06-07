@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert, View, Text, ScrollView} from 'react-native'
+import {StyleSheet, Alert, View, Text, ScrollView, TextInput} from 'react-native'
 import WidgetServices from "../Services/WidgetServices";
 import AssignmentServices from "../Services/AssignmentServices";
 import {FormInput,Button, FormLabel, FormValidationMessage} from "react-native-elements";
@@ -121,17 +121,68 @@ class Assignment extends React.Component{
                     onPress={() => this.updateAssignment()}/>
                 <Button title='Delete' backgroundColor='#d9534f'
                         onPress={() => this.updateAssignment()}/>
+
                 <Text>{"\n"}</Text>
-                <Text h1>Preview</Text>
+                <Text style={styles.titleText}>Preview</Text>
                 <Text>{"\n"}</Text>
-                <Text h1>{this.state.widgetTitle}</Text>
+                <Text style={styles.titleText}>{this.state.widgetTitle + '   ' + this.state.widgetPoints + 'pts'}</Text>
                 <Text>{"\n"}</Text>
-                <Text>{this.state.widgetDescription}</Text>
+                <Text style={styles.baseText}>{this.state.widgetDescription}</Text>
                 <Text>{"\n"}</Text>
-                <Text>{this.state.widgetPoints}</Text>
+                <Text style={styles.headerText}> Essay answer </Text>
+                <View style={{
+                    backgroundColor: 'white'}}
+                >
+                    <TextInput editable = {true}
+                               multiline = {true}
+                               numberOfLines = {10}
+                    placeholder='Some Essay Text'/>
+                </View>
+
+                <Text>{"\n"}</Text>
+                <Text style={styles.headerText}> Upload a file </Text>
+                <View style={{
+                    backgroundColor: 'white'}}>
+                    <TextInput editable = {true}
+                               multiline = {true}
+                               numberOfLines = {1}
+                               placeholder='No file chosen'/>
+                </View>
+                <Button title='Choose File'  backgroundColor='#428bca'
+                         onPress={() => {}}/>
+                <Text>{"\n"}</Text>
+                <Text style={styles.headerText}> Submit a link</Text>
+                <View style={{
+                    backgroundColor: 'white'}}>
+                    <TextInput editable = {true}
+                               multiline = {true}
+                               numberOfLines = {1}
+                               />
+                </View>
+                <Text>{"\n"}</Text>
+                <Button title='Submit'  backgroundColor='#428bca'
+                        onPress={() => {}}/>
+                <Button title='Cancel'  backgroundColor='#d9534f'
+                        onPress={() => {}}/>
+                <Text>{"\n"}</Text>
+                <Text>{"\n"}</Text>
             </ScrollView>
+
         )
     }
 }
 
 export default Assignment
+const styles = StyleSheet.create({
+    baseText: {
+        fontSize:12,
+    },
+    titleText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+    }
+});
