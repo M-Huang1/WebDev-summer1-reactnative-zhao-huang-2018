@@ -5,13 +5,16 @@ import {createStackNavigator} from "react-navigation";
 import ModuleList from "./Components/ModuleList";
 import LessonList from "./Components/LessonList";
 import WidgetList from "./Components/WidgetList";
+import Assignment from "./Elements/Assignment";
+import Exam from "./Elements/Exam";
 
 const App = createStackNavigator({
     CourseList,
     ModuleList,
     LessonList,
     WidgetList,
-    Assignment
+    Assignment,
+    Exam
 });
 
 export default App;

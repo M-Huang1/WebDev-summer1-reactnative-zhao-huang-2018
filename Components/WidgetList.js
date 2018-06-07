@@ -3,6 +3,7 @@ import {View,ScrollView, Alert, Picker} from 'react-native'
 import {Text,ListItem, Button, FormLabel, Divider} from 'react-native-elements'
 import WidgetServices from "../Services/WidgetServices";
 import AssignmentServices from '../Services/AssignmentServices';
+import ExamServices from "../Services/ExamServices";
 
 
 class WidgetList extends Component {
@@ -11,9 +12,11 @@ class WidgetList extends Component {
         super(props);
         this.widgetService = WidgetServices.instance;
         this.assignmentService = AssignmentServices.instance;
+        this.examService = ExamServices.instance;
         this.state = {
             widgets:[],
             lessonId: 2,
+
             widgetType: 'assignment'
 
         };
@@ -34,13 +37,22 @@ class WidgetList extends Component {
         let Widget={
             className:this.state.widgetType,
             title:'',
+            points:100,
             description:'Sample Description'
         };
         if(Widget.className === 'assignment'){
-            Widget.title = 'Assignment Title'
+            Widget.title = 'Assignment Title';
             this.assignmentService.createAssignment(Widget, this.state.lessonId).
                 then(() => {
                     this.findAllWidgetsByLesson()
+            })
+
+        }
+        else if(Widget.className === 'exam'){
+            Widget.title = 'Exam Title';
+            this.examService.createExam(Widget, this.state.lessonId).
+            then(() => {
+                this.findAllWidgetsByLesson()
             })
 
         }
@@ -52,7 +64,8 @@ class WidgetList extends Component {
                 .navigate("Assignment", {assignmentId: widget.id})
         }
         else if (widget.className === 'exam') {
-            console.log('lul');
+            this.props.navigation
+                .navigate("Exam", {examId: widget.id})
         }
     }
 
@@ -62,6 +75,7 @@ class WidgetList extends Component {
             widgets = this.state.widgets.map((widget,index) => {
                 return <ListItem
                     onPress={()=> {
+                        this.navigateToWidget(widget)
                     }
                     }
                     key={index}

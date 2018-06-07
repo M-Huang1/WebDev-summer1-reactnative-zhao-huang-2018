@@ -1,22 +1,22 @@
 import React from 'react'
-import {Alert, View, Text, ScrollView} from 'react-native'
+import {Alert, View, Text} from 'react-native'
 import WidgetServices from "../Services/WidgetServices";
-import AssignmentServices from "../Services/AssignmentServices";
+import ExamServices from "../Services/ExamServices";
 import {FormInput,Button, FormLabel, FormValidationMessage} from "react-native-elements";
 
 
-class Assignment extends React.Component{
-    static navigationOptions = { title: "Assignment"};
+class Exam extends React.Component{
+    static navigationOptions = { title: "Exam"};
 
     constructor(props) {
         super(props);
-        this.assignmentService = AssignmentServices.instance;
+        this.examService = ExamServices.instance;
         this.state = {
             widgets:[],
-            assignment: null,
-            assignmentId: this.props.navigation.getParam('assignmentId'),
+            exam: null,
+            examId: this.props.navigation.getParam('examId'),
+            widgetPoints:0,
             widgetTitle: '',
-            widgetPoints: 0,
             widgetDescription: ''
 
         };
@@ -24,16 +24,16 @@ class Assignment extends React.Component{
 
     }
     componentDidMount() {
-        this.setState({assignmentId: this.props.navigation.getParam('assignmentId')});
-        this.assignmentService.findAssignmentById(this.state.assignmentId).
-        then((assignment) => {
-            this.setState({assignment: assignment,
-                widgetTitle: assignment.title,
-                widgetPoints: assignment.points,
-                widgetDescription: assignment.description})
+        this.setState({examId: this.props.navigation.getParam('examId')});
+        this.examService.findExamById(this.state.examId).
+        then((exam) => {
+            this.setState({exam: exam,
+                widgetTitle: exam.title,
+                widgetPoints: exam.points,
+                widgetDescription: exam.description})
         });
     }
-    updateAssignment(){
+    updateExam(){
         if(this.state.widgetDescription === ''){
             Alert.alert('Widget Description Is Required',
                 'Please Enter A Description')
@@ -42,26 +42,22 @@ class Assignment extends React.Component{
             Alert.alert('Widget Title Is Required',
                 'Please Enter A Title')
         }
-        else if(this.state.widgetPoints === ''){
-            Alert.alert('Widget Points Is Required',
-                'Please Enter Points')
-        }
         else if(isNaN(this.state.widgetPoints)){
             Alert.alert('Widget Points Must Be A Number',
                 'Please Enter A Number')
         }
         else {
-            let assignment = {
+            let exam = {
                 title: this.state.widgetTitle,
                 description: this.state.widgetDescription,
+                id: this.state.examId,
                 points: parseInt(this.state.widgetPoints),
-                id: this.state.assignmentId,
-                className: 'assignment'
+                className: 'exam'
             };
-            this.assignmentService.updateAssignment(assignment).then(
+            this.examService.updateExam(exam).then(
                 () => {
                     Alert.alert('Success',
-                        'Assignment Was Updated')
+                        'Exam Was Updated')
                 }
             );
         }
@@ -83,7 +79,7 @@ class Assignment extends React.Component{
         }
     }
     renderPointsValidation(){
-        if(this.state.widgetPoints === ''){
+        if(this.state.widgetPoints=== '' ){
             return ( <FormValidationMessage>
                 Exam Points are required
             </FormValidationMessage>)
@@ -98,7 +94,7 @@ class Assignment extends React.Component{
 
     render() {
         return(
-            <ScrollView style={{padding: 15}}>
+            <View style={{padding: 15}}>
                 <FormLabel>Title</FormLabel>
                 <FormInput value={this.state.widgetTitle} onChangeText={
                     text => this.setState({widgetTitle: text})
@@ -110,17 +106,16 @@ class Assignment extends React.Component{
                 <FormInput value={this.state.widgetDescription} onChangeText={
                     text => this.setState({widgetDescription: text})
                 }/>
-                {this.renderDescValidation()}
-
                 <FormLabel>Points</FormLabel>
                 <FormInput value={this.state.widgetPoints.toString()} onChangeText={
                     text => this.setState({widgetPoints: text})
                 }/>
                 {this.renderPointsValidation()}
+                {this.renderDescValidation()}
                 <Button title='Save' backgroundColor='#428bca'
-                    onPress={() => this.updateAssignment()}/>
+                        onPress={() => this.updateExam()}/>
                 <Button title='Delete' backgroundColor='#d9534f'
-                        onPress={() => this.updateAssignment()}/>
+                        onPress={() => this.updateExam()}/>
                 <Text>{"\n"}</Text>
                 <Text h1>Preview</Text>
                 <Text>{"\n"}</Text>
@@ -129,9 +124,9 @@ class Assignment extends React.Component{
                 <Text>{this.state.widgetDescription}</Text>
                 <Text>{"\n"}</Text>
                 <Text>{this.state.widgetPoints}</Text>
-            </ScrollView>
+            </View>
         )
     }
 }
 
-export default Assignment
+export default Exam
