@@ -33,6 +33,25 @@ class Assignment extends React.Component{
                 widgetDescription: assignment.description})
         });
     }
+    deleteAssignment(){
+        let self = this;
+        Alert.alert('Are you sure you want to delete this widget?',
+            'This cannot be undone.',
+            [
+                {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+                {text: 'Yes', onPress: () => {
+                    this.assignmentService
+                        .deleteAssignment(self.state.assignmentId)
+                        .then((response) => {
+                            this.props.navigation
+                                .navigate("WidgetList", {
+                                    lessonId: self.props.navigation.getParam('lessonId')
+                                })
+                        })
+                    }}
+                    ])
+    }
+
     updateAssignment(){
         if(this.state.widgetDescription === ''){
             Alert.alert('Widget Description Is Required',
@@ -120,7 +139,7 @@ class Assignment extends React.Component{
                 <Button title='Save' backgroundColor='#428bca'
                     onPress={() => this.updateAssignment()}/>
                 <Button title='Delete' backgroundColor='#d9534f'
-                        onPress={() => this.updateAssignment()}/>
+                        onPress={() => this.deleteAssignment()}/>
 
                 <Text>{"\n"}</Text>
                 <Text style={styles.titleText}>Preview</Text>

@@ -20,6 +20,7 @@ class ModuleList extends Component {
             .then(response => (response.json()))
             .then(modules => this.setState({modules: modules}))
     }
+
     render() {
         return(
             <View style={{padding: 15}}>

@@ -7,6 +7,7 @@ import LessonList from "./Components/LessonList";
 import WidgetList from "./Components/WidgetList";
 import Assignment from "./Elements/Assignment";
 import Exam from "./Elements/Exam";
+import Question from "./Elements/Question";
 
 const App = createStackNavigator({
     CourseList,
@@ -14,7 +15,8 @@ const App = createStackNavigator({
     LessonList,
     WidgetList,
     Assignment,
-    Exam
+    Exam,
+    Question
 });
 
 export default App;

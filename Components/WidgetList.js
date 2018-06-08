@@ -16,7 +16,6 @@ class WidgetList extends Component {
         this.state = {
             widgets:[],
             lessonId: 2,
-
             widgetType: 'assignment'
 
         };
@@ -28,6 +27,13 @@ class WidgetList extends Component {
             .then(widgets => this.setState({widgets:widgets}))
     }
 
+    componentDidUpdate(newProps){
+        if(this.props.widget !== newProps.widgets) {
+            this.setState({lessonId: newProps.navigation.getParam('lessonId')});
+            this.widgetService.findAllWidgetsForLesson(this.state.lessonId)
+                .then(widgets => this.setState({widgets: widgets}))
+        }
+    }
     findAllWidgetsByLesson(){
         this.widgetService.findAllWidgetsForLesson(this.state.lessonId)
             .then(widgets => this.setState({widgets:widgets}))
@@ -75,7 +81,7 @@ class WidgetList extends Component {
             widgets = this.state.widgets.map((widget,index) => {
                 return <ListItem
                     onPress={()=> {
-                        this.navigateToWidget(widget)
+                        this.navigateToWidget(widget, {lessonId: this.state.lessonId})
                     }
                     }
                     key={index}
@@ -113,7 +119,8 @@ class WidgetList extends Component {
                         onPress={() => this.createWidget()}
                         color='white'
                         title='Create'/>
-
+                <Text>{"\n"}</Text>
+                <Text>{"\n"}</Text>
             </ScrollView>
         )
     }
